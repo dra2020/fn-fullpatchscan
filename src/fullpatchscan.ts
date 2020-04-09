@@ -392,6 +392,7 @@ export class FsmFullPatchScan extends FSM.Fsm
                 this.toProcess.push(sp);
             }
             this.env.log.value({ event: 'fullpatchscan: patching queue size', value: this.toProcess.length });
+            this.env.log.chatter(`fullpatchscan: ${this.toProcess.length} records to patch`);
             this.query = null;
             this.setState(FSM_PROCESSING);
           }

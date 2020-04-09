@@ -28,9 +28,9 @@ class FsmWaiter extends FSM.Fsm
       this.setState(FSM.FSM_DONE);
       this.env.log.dump();
       if (this.isDependentError)
-        this.callback({ result: 1 }, null);
+        this.callback({ result: 1, chatters: this.env.log.chatters() }, null);
       else
-        this.callback(null, { result: 0 });
+        this.callback(null, { result: 0, chatters: this.env.log.chatters() });
     }
   }
 }
@@ -41,6 +41,7 @@ let mgr = new FSM.Fsm(env);
 export function fullPatchScan(event: any, context: any, callback: any): void
 {
   env.context.setValues(event ? event.context : {});
+  env.log.chatters();
   let waiter = new FsmWaiter(env, callback);
   waiter.waitOn(new FPS.FsmFullPatchScan(env));
   mgr.waitOn(waiter);

@@ -46,7 +46,6 @@ var libConfig = {
 
 };
 
-/*
 var testConfig = {
     entry: './test/test.ts',
     target: 'node',
@@ -74,6 +73,5 @@ var testConfig = {
     }
 
 };
-*/
 
-module.exports = [ libConfig /*, testConfig */ ];
+module.exports = [ libConfig , testConfig ];
