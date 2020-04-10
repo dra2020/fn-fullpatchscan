@@ -17,6 +17,7 @@ export interface Environment
   storageManager: Storage.StorageManager;
   db: DB.DBClient;
   col: DB.DBCollection;
+  colsplit: DB.DBCollection;
   lambdaManager: Lambda.Manager;
 }
 
@@ -30,6 +31,7 @@ export function create(): Environment
       db: null,
       storageManager: null,
       col: null,
+      colsplit: null,
       lambdaManager: null
     };
 
@@ -38,6 +40,7 @@ export function create(): Environment
   env.log = LogServer.create(env);
   env.db = DBDynamo.create(env);
   env.col = env.db.createCollection('state', DT.Schemas['state']);
+  env.colsplit = env.db.createCollection('splitblock', DT.Schemas['splitblock']);
   env.storageManager = new S3.StorageManager(env, DT.BucketMap);
   env.lambdaManager = Lambda.create(env);
 

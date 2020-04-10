@@ -44,5 +44,6 @@ export function fullPatchScan(event: any, context: any, callback: any): void
   env.log.chatters();
   let waiter = new FsmWaiter(env, callback);
   waiter.waitOn(new FPS.FsmFullPatchScan(env));
+  waiter.waitOn(new FPS.FsmFullSplitPatch(env));
   mgr.waitOn(waiter);
 }

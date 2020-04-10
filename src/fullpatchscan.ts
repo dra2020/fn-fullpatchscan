@@ -409,3 +409,57 @@ export class FsmFullPatchScan extends FSM.Fsm
     }
   }
 }
+
+export class FsmFullSplitPatch extends FSM.Fsm
+{
+  query: DB.DBQuery;
+  chunkKey: string;
+  nPatched: number;
+
+  constructor(env: Environment)
+  {
+    super(env)
+    this.query = null;
+    this.nPatched = 0;
+  }
+
+  get env(): Environment { return this._env as Environment }
+
+  tick(): void
+  {
+    if (this.ready && this.isDependentError)
+    {
+      this.env.log.chatter(`fullpatchscan: exiting split patching because of dependent error`);
+      this.setState(FSM.FSM_ERROR);
+    }
+    if (this.ready)
+    {
+      switch (this.state)
+      {
+        case FSM.FSM_STARTING:
+          this.query = this.env.db.createQuery(this.env.colsplit, { });
+          this.waitOn(this.query.fsmResult);
+          this.setState(FSM.FSM_PENDING);
+          break;
+
+        case FSM.FSM_PENDING:
+          this.query.fsmResult.a.forEach((s: DT.SplitBlock) => {
+              if (s.blocks !== undefined && s.chunkKey === undefined)
+              {
+                this.nPatched++;
+                this.waitOn(this.env.db.createUpdate(this.env.colsplit, { id: s.id }, { chunkKey: DT.splitToChunkKey(s) }));
+              }
+            });
+          this.query.fsmResult.reset();
+          if (this.query.done)
+          {
+            this.env.log.chatter(`fullpatchscan: updated ${this.nPatched} splitblock records`);
+            this.setState(FSM.FSM_DONE);
+          }
+          else
+            this.waitOn(this.query.fsmResult);
+          break;
+      }
+    }
+  }
+}
