@@ -75,7 +75,7 @@ class SessionBlob extends Storage.StorageBlob
 
   constructor(env: Environment, id: string)
   {
-    super(env, id);
+    super(env, id, env.context.xflag('production') ? 'production' : 'development');
 
     this.otengine = null;
     this.vfCache = undefined;
