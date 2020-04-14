@@ -21,7 +21,7 @@ export interface Environment
   lambdaManager: Lambda.Manager;
 }
 
-export function create(): Environment
+export function create(values: any): Environment
 {
   let env: Environment =
     {
@@ -36,8 +36,10 @@ export function create(): Environment
     };
 
   env.context = Context.create();
+  env.context.setValues(values);
   env.fsmManager = new FSM.FsmManager();
   env.log = LogServer.create(env);
+  env.log.chatters();
   env.db = DBDynamo.create(env);
   env.col = env.db.createCollection('state', DT.Schemas['state']);
   env.colsplit = env.db.createCollection('splitblock', DT.Schemas['splitblock']);

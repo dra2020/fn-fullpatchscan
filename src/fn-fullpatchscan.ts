@@ -35,13 +35,10 @@ class FsmWaiter extends FSM.Fsm
   }
 }
 
-let env = Env.create();
-let mgr = new FSM.Fsm(env);
-
 export function fullPatchScan(event: any, context: any, callback: any): void
 {
-  env.context.setValues(event ? event.context : {});
-  env.log.chatters();
+  let env = Env.create(event ? event.context : {});
+  let mgr = new FSM.Fsm(env);
   let waiter = new FsmWaiter(env, callback);
   waiter.waitOn(new FPS.FsmFullPatchScan(env));
   waiter.waitOn(new FPS.FsmFullSplitPatch(env));
