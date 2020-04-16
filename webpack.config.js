@@ -51,7 +51,7 @@ var testConfig = {
     target: 'node',
     mode: 'development',
     output: {
-        path: __dirname + '/dist',
+        path: __dirname + '/testdist',
         filename: 'test.js'
     },
 

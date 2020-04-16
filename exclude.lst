@@ -1,4 +1,0 @@
-*.git/*
-*fullpatchscan.zip
-*exclude.lst
-*node_modules/aws-sdk*
