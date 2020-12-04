@@ -90,18 +90,23 @@ class SessionBlob extends Storage.StorageBlob
     return se;
   }
 
+  get meta(): any
+  {
+    return this.otengine.toPartialValue('meta');
+  }
+
   get stateCode(): string
   {
-    let value: any = this.otengine.toValue();
+    let meta = this.meta;
 
-    return value && value['meta'] && value['meta'].state ? value['meta'].state : undefined;
+    return meta && meta.state ? meta.state : undefined;
   }
 
   get nDistricts(): number
   {
-    let value: any = this.otengine.toValue();
+    let meta = this.meta;
 
-    return value && value['meta'] && value['meta'].nDistricts !== undefined ? value['meta'].nDistricts : undefined;
+    return meta && meta.nDistricts !== undefined ? meta.nDistricts : undefined;
   }
 
   get vfeatures(): Util.IndexedArray
@@ -137,9 +142,7 @@ class SessionBlob extends Storage.StorageBlob
 
   districtProps(maxDistricts: number): any[]
   {
-    let value: any = this.otengine.toValue();
-
-    let ret: any[] = value ? value['districtprops'] : null;
+    let ret: any[] = this.otengine.toPartialValue('districtprops');
 
     if (! Array.isArray(ret) || ret.length == 0)
       ret = [ { color: Transparent } ];
@@ -151,16 +154,16 @@ class SessionBlob extends Storage.StorageBlob
 
   get datasource(): string
   {
-    let value: any = this.otengine.toValue();
+    let ds = this.otengine.toPartialValue('datasource');
 
-    return value && value['datasource'] && value['datasource'].kind ? value['datasource'].kind : undefined;
+    return ds && ds.kind ? ds.kind : undefined;
   }
 
   get blockMap(): any
   {
-    let value: any = this.otengine ? this.otengine.toValue() : undefined;
-    let blockMap: string = value && value['meta'] ? value['meta'].blockMap : undefined;
-    return value && blockMap ? value[blockMap] : undefined;
+    let meta = this.meta;
+    let blockMap: string = meta ? meta.blockMap : undefined;
+    return blockMap ? this.otengine.toPartialValue(blockMap) : undefined;
   }
 
   fromString(s: string): void
