@@ -50,9 +50,9 @@
     "@dra2020/logserver": "^2.0.1",
     "@dra2020/ot-editutil": "^2.1.8",
     "@dra2020/ot-js": "^2.0.50",
-    "@dra2020/poly": "^1.7.26",
+    "@dra2020/poly": "^1.7.27",
     "@dra2020/storage": "^2.0.2",
     "@dra2020/storages3": "^2.0.1",
-    "@dra2020/util": "^1.1.4"
+    "@dra2020/util": "^1.1.5"
   }
 }
