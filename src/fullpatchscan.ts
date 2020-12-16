@@ -11,6 +11,9 @@ import * as DT from '@dra2020/dra-types';
 
 import { Environment } from  './env';
 
+import * as u from 'util';
+Util.setCoder({ encoder: new u.TextEncoder(), decoder: new u.TextDecoder('utf-8') });
+
 let UniqueState = FSM.FSM_CUSTOM1;
 const FSM_QUERYING = UniqueState++;
 const FSM_PROCESSING = UniqueState++;
